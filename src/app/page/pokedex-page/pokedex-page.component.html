@@ -72,20 +72,38 @@
         <div class="pokeindex-middle"></div>
         <div class="pokeindex-right">
             <div class="pokeindex-right__screen">
-                <app-pokemon-detail ng *ngIf="isPokeSelected" class="screen-container"
+                <app-pokemon-detail *ngIf="isPokeSelected" class="screen-container"
                     [pokemon]="pokemonDetail"></app-pokemon-detail>
+                <div *ngIf="!isPokeSelected && isInputNumber" id="current-number"
+                    [ngClass]="{ 'final-number': inputNumber, 'interim-number': !inputNumber }">
+                    {{ inputNumber || inputNumberTemp }}
+                </div>
+                <div *ngIf="!isPokeSelected && !isInputNumber" id="displayIdPoke">
+                    {{currentIndex + 1}}
+                </div>
             </div>
+
             <div class="pokeindex-right__buttons">
-                <span style="display: flex; align-items: center; justify-content: center">1</span>
-                <span style="display: flex; align-items: center; justify-content: center">2</span>
-                <span style="display: flex; align-items: center; justify-content: center">3</span>
-                <span style="display: flex; align-items: center; justify-content: center">4</span>
-                <span style="display: flex; align-items: center; justify-content: center">5</span>
-                <span style="display: flex; align-items: center; justify-content: center">6</span>
-                <span style="display: flex; align-items: center; justify-content: center">7</span>
-                <span style="display: flex; align-items: center; justify-content: center">8</span>
-                <span style="display: flex; align-items: center; justify-content: center">9</span>
-                <span style="display: flex; align-items: center; justify-content: center">0</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">1</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">2</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">3</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">4</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">5</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">6</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">7</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">8</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">9</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="handleClick($event)">0</span>
             </div>
             <div class="pokeindex-right__buttons-quadruple">
                 <div class="dot">

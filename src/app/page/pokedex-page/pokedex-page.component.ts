@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Pokemon } from '../../shared/pokemon.model';
 import { PokedexService } from '../../shared/pokedex.service';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { ZoomService } from '../../shared/zoom.service';
   templateUrl: './pokedex-page.component.html',
   styleUrls: ['./pokedex-page.component.css']
 })
-export class PokedexPageComponent implements OnInit {
+export class PokedexPageComponent implements OnInit, OnDestroy {
   isPokeSelected: boolean = false;
   pokemons!: Pokemon[];
   pokemonDetail!: Pokemon;
@@ -25,8 +25,15 @@ export class PokedexPageComponent implements OnInit {
   private audioContext!: AudioContext;
   private gainNode!: GainNode;
 
+  inputNumberTemp = '';
+  timeout: any;
+  inputNumber = '';
+  isInputNumber: boolean = false;
+  displayTimeout: any;
+
   @ViewChild('pokeList') pokeList!: ElementRef;
   @ViewChild(PokemonListComponent) pokemonListComponent!: PokemonListComponent;
+
 
   constructor(private pokedexService: PokedexService, private zoomService: ZoomService) { }
 
@@ -37,12 +44,49 @@ export class PokedexPageComponent implements OnInit {
     });
   }
 
-  selectPokemon() {
+  ngOnDestroy(): void {
+    // Clear any existing timeouts when the component is destroyed
+    clearTimeout(this.timeout);
+    clearTimeout(this.displayTimeout);
+  }
+
+  handleClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    this.inputNumberTemp += target.textContent || '';
+    this.isInputNumber = true;
+
+    // Clear any existing timeout
+    clearTimeout(this.timeout);
+
+    // Set a new timeout
+    this.timeout = setTimeout(() => {
+      // Display the number after 1.5 seconds
+      this.inputNumber = this.inputNumberTemp;
+
+      // Reset inputNumberTemp
+      this.inputNumberTemp = '';
+
+      // Clear inputNumber after 2 seconds
+      this.displayTimeout = setTimeout(() => {
+        this.inputNumber = '';
+
+        this.isInputNumber = false;
+      }, 500);
+    }, 1700);
+
+    // Optionally limit to 3 digits
+    if (this.inputNumberTemp.length > 3) {
+      this.inputNumberTemp = this.inputNumberTemp.slice(0, 3);
+    }
+  }
+
+
+  selectPokemon(): void {
     this.pokemonDetail = this.pokemons[this.currentIndex];
     this.isPokeSelected = true;
   }
 
-  receivePokemon(data: any) {
+  receivePokemon(data: any): void {
     if (data instanceof Pokemon) {
       this.pokemonDetail = data;
     }
@@ -74,7 +118,7 @@ export class PokedexPageComponent implements OnInit {
     }
   }
 
-  scrollAll() {
+  scrollAll(): void {
     const pokeListDivScrollable = document.getElementById("pokeList");
     if (pokeListDivScrollable) {
       if (this.currentIndex === 0) {
@@ -90,7 +134,7 @@ export class PokedexPageComponent implements OnInit {
     }
   }
 
-  playSound() {
+  playSound(): void {
     if (!this.pokemonDetail) {
       console.error("No Pokémon selected.");
       return;
@@ -112,7 +156,7 @@ export class PokedexPageComponent implements OnInit {
     }
   }
 
-  shinyToggle() {
+  shinyToggle(): void {
     if (!this.pokemonDetail) {
       console.error("No Pokémon selected.");
       return;
@@ -120,7 +164,7 @@ export class PokedexPageComponent implements OnInit {
     this.isShiny = !this.isShiny
   }
 
-  backToggle() {
+  backToggle(): void {
     if (!this.pokemonDetail) {
       console.error("No Pokémon selected.");
       return;
@@ -129,7 +173,7 @@ export class PokedexPageComponent implements OnInit {
     console.log(this.isBack)
   }
 
-  private playPokemonCry() {
+  private playPokemonCry(): void {
     if (!this.pokemonDetail.cryUrlLatest) {
       console.error("No cry URL available for the selected Pokémon.");
       return;
