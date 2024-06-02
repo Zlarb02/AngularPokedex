@@ -51,12 +51,12 @@
                     </div>
                 </div>
                 <div class="controller">
-                    <button *ngIf="!isFormSubmitted" class="controller-touch" (click)="onSubmit()"
+                    <button *ngIf="!isFormSubmitted" class="controller-touch" (click)="onSubmit()" (click)="resetForm()"
                         [disabled]="pokemonForm.invalid">
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                    <button *ngIf="isFormSubmitted" class="controller-touch-clicked" (click)="resetForm()"
-                        [disabled]="pokemonForm.invalid">
+                    <button *ngIf="isFormSubmitted" class="controller-touch-clicked" [disabled]="pokemonForm.invalid"
+                        (click)="resetForm()">
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
                     <div class="controller-joystick"></div>
