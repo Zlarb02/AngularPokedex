@@ -1,8 +1,29 @@
-<div *ngIf="pokemon !== undefined">
-    <strong style="font-size: 34px;">{{pokemon.name}} :</strong> <br>
-    {{pokemon.types}} <br>
-    {{pokemon.description}}<br>
-    Taille : {{pokemon.height}} Mètres <br>
-    Poid : {{pokemon.weight}} Kilos <br>
-    Capacités : {{pokemon.abilities}}<br>
+<div width="100%" *ngIf="pokemon !== undefined"
+    style="display: flex; justify-content: center; align-items: center; margin-top: 30px; margin-left: 5px; margin-right: 5px;">
+    <div *ngIf="rightScreenPage == 1">
+        <strong style="font-size: 34px;  ;">{{pokemon.name}} </strong>
+    </div>
+    <div *ngIf="rightScreenPage == 2" style="font-size: 20px; margin-top: -25px;">
+        {{pokemon.description}}
+    </div>
+    <div *ngIf="rightScreenPage == 3" style="font-size: 25px; margin-top: -25px;">
+        <strong>Types: </strong><br> {{pokemon.types.join(', ')}}
+    </div>
+    <div *ngIf="rightScreenPage == 4" style="font-size: 25px; margin-top: -25px;">
+        Capacités : <br> {{pokemon.abilities.join(', ')}}
+    </div>
+    <div *ngIf="rightScreenPage == 5" style="font-size: 25px; margin-top: -25px;">
+        <strong>Hauteur: </strong> {{pokemon.height}}m <br>
+        <strong>Poids: </strong> {{pokemon.weight}}kg
+    </div>
+    <div *ngIf="rightScreenPage == 6">
+    </div>
+    <div *ngIf="rightScreenPage == 7">
+    </div>
+    <div *ngIf="rightScreenPage == 8">
+    </div>
+    <div *ngIf="rightScreenPage == 9">
+    </div>
+    <div *ngIf="rightScreenPage == 0">
+    </div>
 </div>

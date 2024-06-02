@@ -13,8 +13,9 @@
                 </div>
                 <div id="pokeList" class="screen">
 
-                    <app-pokemon-list class="screen-container" [pokemons]="pokemons" [isShiny]="isShiny"
-                        [isBack]="isBack" (pokemonSelected)="receivePokemon($event)"></app-pokemon-list>
+                    <app-pokemon-list class="screen-container" *ngIf="isPowerOn" [pokemons]="pokemons"
+                        [isShiny]="isShiny" [isBack]="isBack"
+                        (pokemonSelected)="receivePokemon($event)"></app-pokemon-list>
 
                 </div>
                 <div class="status">
@@ -34,8 +35,9 @@
                         style="display: flex; align-items: center; justify-content: center"><i
                             class="fa-solid fa-up-down"></i></div>
                     <div class="buttons-quad">
-                        <span></span>
-                        <span></span>
+                        <span *ngIf="!isPowerOn" (click)="powerOn()"></span>
+                        <span *ngIf="isPowerOn" (click)="powerOff()"></span>
+                        <span (click)="isPokeSelected = false"></span>
                     </div>
                 </div>
                 <div class="controller">
@@ -72,18 +74,18 @@
         <div class="pokeindex-middle"></div>
         <div class="pokeindex-right">
             <div class="pokeindex-right__screen">
-                <app-pokemon-detail *ngIf="isPokeSelected" class="screen-container"
-                    [pokemon]="pokemonDetail"></app-pokemon-detail>
-                <div *ngIf="!isPokeSelected && isInputNumber" id="current-number"
+                <app-pokemon-detail *ngIf="isPokeSelected && isPowerOn" class="screen-container"
+                    [pokemon]="pokemonDetail" [rightScreenPage]="rightScreenPage"></app-pokemon-detail>
+                <div *ngIf="!isPokeSelected && isInputNumber && isPowerOn" id="current-number"
                     [ngClass]="{ 'final-number': inputNumber, 'interim-number': !inputNumber }">
                     {{ inputNumber || inputNumberTemp }}
                 </div>
-                <div *ngIf="!loading && !isPokeSelected && !isInputNumber" id="displayIdPoke">
+                <div *ngIf="!loading && !isPokeSelected && !isInputNumber && isPowerOn" id="displayIdPoke">
                     {{currentIndex + 1}}
                 </div>
             </div>
 
-            <div *ngIf="!isPokeSelected" class="pokeindex-right__buttons">
+            <div *ngIf="!isPokeSelected " class="pokeindex-right__buttons">
                 <span style="display: flex; align-items: center; justify-content: center"
                     (click)="handleClick($event)">1</span>
                 <span style="display: flex; align-items: center; justify-content: center"
@@ -106,11 +108,16 @@
                     (click)="handleClick($event)">0</span>
             </div>
             <div *ngIf="isPokeSelected" class="pokeindex-right__buttons">
-                <span style="display: flex; align-items: center; justify-content: center">1</span>
-                <span style="display: flex; align-items: center; justify-content: center">2</span>
-                <span style="display: flex; align-items: center; justify-content: center">3</span>
-                <span style="display: flex; align-items: center; justify-content: center">4</span>
-                <span style="display: flex; align-items: center; justify-content: center">5</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="rightScreenPage = 1">1</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="rightScreenPage = 2">2</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="rightScreenPage = 3">3</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="rightScreenPage = 4">4</span>
+                <span style="display: flex; align-items: center; justify-content: center"
+                    (click)="rightScreenPage = 5">5</span>
                 <span style="display: flex; align-items: center; justify-content: center">6</span>
                 <span style="display: flex; align-items: center; justify-content: center">7</span>
                 <span style="display: flex; align-items: center; justify-content: center">8</span>
@@ -122,7 +129,11 @@
                     <span></span>
                     <span></span>
                 </div>
-                <div class="button">
+                <div *ngIf="isPokeSelected" class="button">
+                    <span (click)="rightScreenToLeft()"></span>
+                    <span (click)="rightScreenToRight()"></span>
+                </div>
+                <div *ngIf="!isPokeSelected" class="button">
                     <span></span>
                     <span></span>
                 </div>

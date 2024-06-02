@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, forkJoin } from 'rxjs';
-import { concatMap, map, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, concatMap, from } from 'rxjs';
 import { Pokemon } from './pokemon.model';
 
 @Injectable({
@@ -11,10 +9,10 @@ export class PokedexService {
   private pokemonsSubject = new BehaviorSubject<Pokemon[]>([]);
   pokemons$ = this.pokemonsSubject.asObservable();
 
-  private loadingSubject = new BehaviorSubject<boolean>(true);  // Nouveau BehaviorSubject pour le chargement
+  private loadingSubject = new BehaviorSubject<boolean>(true);
   loading$ = this.loadingSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.loadPokemons();
   }
 
@@ -26,71 +24,82 @@ export class PokedexService {
   getNextPokemonId(): number {
     return this.pokemonsSubject.value.length + 1;
   }
-  loadPokemons(): void {
-    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=1000')
-      .pipe(
-        map(response => response.results),
-        concatMap((pokemonEntries: any[]) => { // Remplacer mergeMap par concatMap
-          const pokemonDetailsRequests = pokemonEntries.map(pokemon => {
-            const id = this.extractIdFromUrl(pokemon.url);
-            return this.http.get<any>(`https://pokeapi.co/api/v2/pokemon-species/${id}/`)
-              .pipe(
-                concatMap(speciesData => { // Remplacer mergeMap par concatMap
-                  const frenchNameEntry = speciesData.names.find((name: any) => name.language.name === 'fr');
-                  const flavorTextEntry = speciesData.flavor_text_entries.find((entry: any) => entry.language.name === 'fr');
-                  const cryUrlLatest = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
-                  return this.http.get<any>(pokemon.url).pipe(
-                    concatMap(pokemonDetails => { // Remplacer mergeMap par concatMap
-                      const abilityRequests = pokemonDetails.abilities.map((ability: any) => {
-                        return this.http.get<any>(`https://pokeapi.co/api/v2/ability/${ability.ability.name}/`).pipe(
-                          map(abilityData => {
-                            const frenchAbilityNameEntry = abilityData.names.find((name: any) => name.language.name === 'fr');
-                            return frenchAbilityNameEntry ? frenchAbilityNameEntry.name : ability.ability.name;
-                          })
-                        );
-                      });
-                      const typeRequests = pokemonDetails.types.map((type: any) => {
-                        return this.http.get<any>(`https://pokeapi.co/api/v2/type/${type.type.name}/`).pipe(
-                          map(typeData => {
-                            const frenchTypeNameEntry = typeData.names.find((name: any) => name.language.name === 'fr');
-                            return frenchTypeNameEntry ? frenchTypeNameEntry.name : type.type.name;
-                          })
-                        );
-                      });
-                      return forkJoin([...abilityRequests, ...typeRequests]).pipe(
-                        map(results => {
-                          const abilities = results.slice(0, abilityRequests.length);
-                          const types = results.slice(abilityRequests.length, abilityRequests.length + typeRequests.length);
-                          const moves = results.slice(abilityRequests.length + typeRequests.length);
-                          return {
-                            id: pokemonDetails.id,
-                            name: frenchNameEntry ? frenchNameEntry.name : pokemonDetails.name,
-                            sprite: pokemonDetails.sprites?.front_default,
-                            back_default: pokemonDetails.sprites?.back_default,
-                            front_shiny: pokemonDetails.sprites?.front_shiny,
-                            back_shiny: pokemonDetails.sprites?.back_shiny,
-                            height: parseFloat((pokemonDetails.height * 0.1).toFixed(2)),
-                            weight: parseFloat((pokemonDetails.weight * 0.1).toFixed(2)),
-                            types: types,
-                            abilities: abilities,
-                            description: flavorTextEntry ? flavorTextEntry.flavor_text : "Pokemon mystérieux.",
-                            cryUrlLatest: cryUrlLatest
-                          };
-                        })
-                      );
-                    })
-                  );
-                })
-              );
+
+  async loadPokemons(): Promise<void> {
+    try {
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
+      const data = await response.json();
+      const pokemonEntries = data.results;
+
+      from(pokemonEntries).pipe(
+        concatMap(async (pokemon: any) => {
+          const id = this.extractIdFromUrl(pokemon.url);
+          const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}/`);
+          const speciesData = await speciesResponse.json();
+
+          const frenchNameEntry = speciesData.names.find((name: any) => name.language.name === 'fr');
+          const flavorTextEntry = speciesData.flavor_text_entries.find((entry: any) => entry.language.name === 'fr');
+          const cryUrlLatest = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+
+          const pokemonResponse = await fetch(pokemon.url);
+          const pokemonDetails = await pokemonResponse.json();
+
+          const abilityPromises = pokemonDetails.abilities.map(async (ability: any) => {
+            try {
+              const abilityResponse = await fetch(`https://pokeapi.co/api/v2/ability/${ability.ability.name}/`);
+              const abilityData = await abilityResponse.json();
+              const frenchAbilityNameEntry = abilityData.names.find((name: any) => name.language.name === 'fr');
+              return frenchAbilityNameEntry ? frenchAbilityNameEntry.name : ability.ability.name;
+            } catch {
+              return 'Unknown Ability';
+            }
           });
-          return forkJoin(pokemonDetailsRequests);
+
+          const typePromises = pokemonDetails.types.map(async (type: any) => {
+            try {
+              const typeResponse = await fetch(`https://pokeapi.co/api/v2/type/${type.type.name}/`);
+              const typeData = await typeResponse.json();
+              const frenchTypeNameEntry = typeData.names.find((name: any) => name.language.name === 'fr');
+              return frenchTypeNameEntry ? frenchTypeNameEntry.name : type.type.name;
+            } catch {
+              return 'Unknown Type';
+            }
+          });
+
+          const abilities = await Promise.all(abilityPromises);
+          const types = await Promise.all(typePromises);
+
+          return {
+            id: pokemonDetails.id,
+            name: frenchNameEntry ? frenchNameEntry.name : pokemonDetails.name,
+            sprite: pokemonDetails.sprites?.front_default,
+            back_default: pokemonDetails.sprites?.back_default,
+            front_shiny: pokemonDetails.sprites?.front_shiny,
+            back_shiny: pokemonDetails.sprites?.back_shiny,
+            height: parseFloat((pokemonDetails.height * 0.1).toFixed(2)),
+            weight: parseFloat((pokemonDetails.weight * 0.1).toFixed(2)),
+            types: types,
+            abilities: abilities,
+            description: flavorTextEntry ? flavorTextEntry.flavor_text : "Pokemon mystérieux.",
+            cryUrlLatest: cryUrlLatest
+          };
         })
-      )
-      .subscribe(pokemons => {
-        const pokemonInstances = pokemons.map(data => new Pokemon(data));
-        this.pokemonsSubject.next(pokemonInstances);
-        this.loadingSubject.next(false);  // Mettre à jour l'état du chargement à false
+      ).subscribe({
+        next: (pokemon) => {
+          this.pokemonsSubject.next([...this.pokemonsSubject.value, new Pokemon(pokemon)]);
+        },
+        complete: () => {
+          this.loadingSubject.next(false);
+        },
+        error: (err) => {
+          console.error('Error loading Pokémon data', err);
+          this.loadingSubject.next(false);
+        }
       });
+    } catch (error) {
+      console.error('Error loading Pokémon data', error);
+      this.loadingSubject.next(false);
+    }
   }
 
 

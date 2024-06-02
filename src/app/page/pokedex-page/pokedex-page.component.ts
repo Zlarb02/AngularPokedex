@@ -15,6 +15,7 @@ import { ZoomService } from '../../shared/zoom.service';
   styleUrls: ['./pokedex-page.component.css']
 })
 export class PokedexPageComponent implements OnInit, OnDestroy {
+  isPowerOn: boolean = true;
 
   loading: boolean = true;
 
@@ -37,6 +38,7 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('pokeList') pokeList!: ElementRef;
   @ViewChild(PokemonListComponent) pokemonListComponent!: PokemonListComponent;
+  rightScreenPage: number = 1;
 
 
   constructor(private pokedexService: PokedexService, private zoomService: ZoomService) { }
@@ -55,6 +57,20 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
     // Clear any existing timeouts when the component is destroyed
     clearTimeout(this.timeout);
     clearTimeout(this.displayTimeout);
+  }
+
+  powerOff(): void {
+    this.isPowerOn = false;
+    this.isPokeSelected = false;
+    this.rightScreenPage = 1;
+    this.currentIndex = 0;
+  }
+
+  powerOn(): void {
+    this.isPowerOn = true;
+    this.isPokeSelected = false;
+    this.rightScreenPage = 1;
+    this.currentIndex = 0;
   }
 
   handleClick(event: Event): void {
@@ -91,6 +107,7 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
   selectPokemon(): void {
     this.pokemonDetail = this.pokemons[this.currentIndex];
     this.isPokeSelected = true;
+    this.rightScreenPage = 1;
   }
 
   receivePokemon(data: any): void {
@@ -138,6 +155,18 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
       this.isPokeSelected = false;
       this.isShiny = false;
       this.isBack = false;
+    }
+  }
+
+  rightScreenToLeft() {
+    if (1 < this.rightScreenPage && this.rightScreenPage < 6) {
+      this.rightScreenPage--
+    }
+  }
+
+  rightScreenToRight() {
+    if (0 < this.rightScreenPage && this.rightScreenPage < 5) {
+      this.rightScreenPage++
     }
   }
 

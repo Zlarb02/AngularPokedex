@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PokemonDetailComponent {
   @Input() pokemon!: Pokemon;
+  @Input() rightScreenPage!: number;
 
   DisplayPokemon() {
     console.log(this.pokemon)

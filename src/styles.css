@@ -236,13 +236,15 @@ body {
 }
 
 .pokeindex-left__buttons .buttons .buttons-circle {
-    height: 70%;
+    height: 69%;
     width: 20%;
     border: 2px solid var(--bg-black);
     background-color: var(--bg-darkgray);
     border-radius: 50%;
     position: relative;
     margin-right: 5%;
+    left: -1%;
+    top: 20%;
 }
 
 .pokeindex-left__buttons .buttons .buttons-quad {
@@ -255,20 +257,24 @@ body {
 
 .pokeindex-left__buttons .buttons .buttons-quad span {
     height: 10%;
-    width: 42%;
+    width: 40%;
     border: 2px solid var(--bg-black);
     position: relative;
-    border-radius: 5px
+    border-radius: 5px;
 }
 
 .pokeindex-left__buttons .buttons .buttons-quad span:nth-child(1) {
     background-color: var(--bg-darkred);
     position: absolute;
+    left: -10px;
+    top: 10px;
 }
 
 .pokeindex-left__buttons .buttons .buttons-quad span:nth-child(2) {
     background-color: var(--bg-lightblue);
     position: absolute;
+    left: 47px;
+    top: 10px;
 }
 
 .pokeindex-left__buttons .controller {
@@ -278,11 +284,13 @@ body {
     align-items: flex-start;
     justify-content: flex-end;
     position: relative;
+    margin-left: 12%;
+    top: -10px;
 }
 
 .pokeindex-left__buttons .controller .controller-touch {
     height: 75%;
-    width: 40%;
+    width: 37%;
     border: 2px solid var(--bg-black);
     background-color: var(--bg-lightgreen);
     border-radius: 5px;
@@ -300,7 +308,7 @@ body {
 
 .pokeindex-left__buttons .controller .controller-touch-clicked {
     height: 75%;
-    width: 40%;
+    width: 37%;
     border: 2px solid var(--bg-black);
     background-color: var(--bg-lightgreen);
     border-radius: 5px;
@@ -324,7 +332,7 @@ body {
 
 .pokeindex-left__buttons .controller .controller-touch:active {
     cursor: pointer;
-    background-color: #45e06e;
+    background-color: var(--bg-lightgreen);
     box-shadow: #45e06e 0 0 2px 2px;
 }
 
@@ -335,7 +343,9 @@ body {
     background-color: var(--bg-darkgray);
     border-radius: 5px;
     position: relative;
-    margin-left: 5%;
+    left: -7%;
+    margin-left: 10%;
+    margin-top: 8%;
 }
 
 .pokeindex-left__buttons .controller .controller-joystick::before {
