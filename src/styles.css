@@ -20,7 +20,7 @@
 
 :root {
     --bg-rose: #ffabd4;
-    --bg-red: #ff055c;
+    --bg-red: #e50d38;
     --bg-darkred: red;
     --bg-darkgray: #474445;
     --bg-black: #000000;
@@ -286,6 +286,7 @@ body {
     position: relative;
     margin-left: 12%;
     top: -10px;
+    left: -5px;
 }
 
 .pokeindex-left__buttons .controller .controller-touch {

@@ -59,6 +59,21 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
     clearTimeout(this.displayTimeout);
   }
 
+  scrollToIndex(): void {
+    const pokeListDivScrollable = document.getElementById("pokeList");
+    if (pokeListDivScrollable && this.inputNumber !== '') {
+
+      pokeListDivScrollable.scrollTop -= (136 * (this.currentIndex + 1));
+      pokeListDivScrollable.scrollTop += (136 * (parseInt(this.inputNumber) - 1));
+      this.currentIndex = parseInt(this.inputNumber) - 1;
+      if (this.currentIndex > this.maxIndex)
+        this.currentIndex = this.maxIndex;
+
+      if (this.currentIndex < 0)
+        this.currentIndex = 0;
+    }
+  }
+
   powerOff(): void {
     this.isPowerOn = false;
     this.isPokeSelected = false;
@@ -86,6 +101,7 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
       // Display the number after 1.5 seconds
       this.inputNumber = this.inputNumberTemp;
 
+      this.scrollToIndex();
       // Reset inputNumberTemp
       this.inputNumberTemp = '';
 

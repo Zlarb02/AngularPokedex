@@ -12,7 +12,7 @@
                     <span></span>
                 </div>
                 <div class="screen" style="overflow: hidden;">
-                    <div class="screen-container" style="transform: scale(0.6); margin-top: -40px; overflow: hidden;">
+                    <div class="screen-container" style="transform: scale(0.62); margin-top: -39px;">
                         <form [formGroup]="pokemonForm" (ngSubmit)="onSubmit()" #myForm="ngForm">
                             <div>
                                 <label for="name">Nom du Pokemon:</label>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="buttons-quad">
                         <span></span>
-                        <span></span>
+                        <span (click)="myForm.reset()"></span>
                     </div>
                 </div>
                 <div class="controller">
@@ -73,8 +73,7 @@
                     <div style='margin-top: 10px;'
                         *ngIf="pokemonForm.get('description')!.invalid && pokemonForm.get('description')!.touched">Une
                         description est requise.</div>
-                    <div style='margin-top: 10px;'
-                        *ngIf="pokemonForm.get('image')!.invalid && pokemonForm.get('image')!.touched">
+                    <div *ngIf="pokemonForm.get('image')!.invalid && pokemonForm.get('image')!.touched">
                         Le lien de l'image doit commencer par http(s):// et finir par .png, .jpg, .jpeg, .gif ou .bmp
                     </div>
                     <img style='margin-top: 10px;' style="height: 110px;"

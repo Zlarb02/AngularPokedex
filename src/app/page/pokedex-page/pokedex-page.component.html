@@ -74,7 +74,7 @@
         <div class="pokeindex-middle"></div>
         <div class="pokeindex-right">
             <div class="pokeindex-right__screen">
-                <app-pokemon-detail *ngIf="isPokeSelected && isPowerOn" class="screen-container"
+                <app-pokemon-detail *ngIf="!loading && isPokeSelected && isPowerOn" class="screen-container"
                     [pokemon]="pokemonDetail" [rightScreenPage]="rightScreenPage"></app-pokemon-detail>
                 <div *ngIf="!isPokeSelected && isInputNumber && isPowerOn" id="current-number"
                     [ngClass]="{ 'final-number': inputNumber, 'interim-number': !inputNumber }">
@@ -83,9 +83,25 @@
                 <div *ngIf="!loading && !isPokeSelected && !isInputNumber && isPowerOn" id="displayIdPoke">
                     {{currentIndex + 1}}
                 </div>
+                <div *ngIf="!loading && isPokeSelected && !isInputNumber && isPowerOn"
+                    style="position: absolute; font-size: 17px; bottom: 2px; right: 3px;">
+                    {{rightScreenPage}}/5
+                </div>
             </div>
 
-            <div *ngIf="!isPokeSelected " class="pokeindex-right__buttons">
+            <div *ngIf="loading" class="pokeindex-right__buttons">
+                <span style="display: flex; align-items: center; justify-content: center">1</span>
+                <span style="display: flex; align-items: center; justify-content: center">2</span>
+                <span style="display: flex; align-items: center; justify-content: center">3</span>
+                <span style="display: flex; align-items: center; justify-content: center">4</span>
+                <span style="display: flex; align-items: center; justify-content: center">5</span>
+                <span style="display: flex; align-items: center; justify-content: center">6</span>
+                <span style="display: flex; align-items: center; justify-content: center">7</span>
+                <span style="display: flex; align-items: center; justify-content: center">8</span>
+                <span style="display: flex; align-items: center; justify-content: center">9</span>
+                <span style="display: flex; align-items: center; justify-content: center">0</span>
+            </div>
+            <div *ngIf="!isPokeSelected && !loading" class="pokeindex-right__buttons">
                 <span style="display: flex; align-items: center; justify-content: center"
                     (click)="handleClick($event)">1</span>
                 <span style="display: flex; align-items: center; justify-content: center"

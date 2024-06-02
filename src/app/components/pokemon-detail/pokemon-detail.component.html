@@ -6,10 +6,21 @@
     <div *ngIf="rightScreenPage == 2" style="font-size: 20px; margin-top: -25px;">
         {{pokemon.description}}
     </div>
-    <div *ngIf="rightScreenPage == 3" style="font-size: 25px; margin-top: -25px;">
+    <div *ngIf="rightScreenPage == 3 && pokemon.types.length > 1" style="font-size: 25px; margin-top: -25px;">
         <strong>Types: </strong><br> {{pokemon.types.join(', ')}}
     </div>
-    <div *ngIf="rightScreenPage == 4" style="font-size: 25px; margin-top: -25px;">
+    <div *ngIf="rightScreenPage == 3 && pokemon.types.length == 1" style="font-size: 25px; margin-top: -25px;">
+        <strong>Type: </strong><br> {{pokemon.types.join(', ')}}
+    </div>
+    <div *ngIf="rightScreenPage == 4 && pokemon.abilities.length == 1" style="font-size: 25px; margin-top: -25px;">
+        Capacité : <br> {{pokemon.abilities.join(', ')}}
+    </div>
+    <div *ngIf="rightScreenPage == 4 && pokemon.abilities[0] == pokemon.abilities[1]"
+        style="font-size: 25px; margin-top: -25px;">
+        Capacité : <br> {{pokemon.abilities[0]}}
+    </div>
+    <div *ngIf="rightScreenPage == 4 && pokemon.abilities.length > 1 && pokemon.abilities[0] != pokemon.abilities[1]"
+        style="font-size: 25px; margin-top: -25px;">
         Capacités : <br> {{pokemon.abilities.join(', ')}}
     </div>
     <div *ngIf="rightScreenPage == 5" style="font-size: 25px; margin-top: -25px;">
