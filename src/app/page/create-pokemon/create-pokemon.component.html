@@ -67,15 +67,18 @@
         <div class="pokeindex-right">
             <div class="pokeindex-right__screen" style="overflow: hidden;">
                 <div class="screen-container"
-                    style="display: flex; justify-content: center; align-items: center; flex-direction: column; transform: scale(0.7); ">
+                    style="display: flex; margin-top: -5px; justify-content: center; align-items: center; flex-direction: column; transform: scale(0.7); ">
                     <div *ngIf="pokemonForm.get('name')!.invalid && pokemonForm.get('name')!.touched">Un nom est requis.
                     </div>
-                    <div *ngIf="pokemonForm.get('image')!.invalid && pokemonForm.get('image')!.touched">
+                    <div style='margin-top: 10px;'
+                        *ngIf="pokemonForm.get('description')!.invalid && pokemonForm.get('description')!.touched">Une
+                        description est requise.</div>
+                    <div style='margin-top: 10px;'
+                        *ngIf="pokemonForm.get('image')!.invalid && pokemonForm.get('image')!.touched">
                         Le lien de l'image doit commencer par http(s):// et finir par .png, .jpg, .jpeg, .gif ou .bmp
                     </div>
-                    <div *ngIf="pokemonForm.get('description')!.invalid && pokemonForm.get('description')!.touched">Une
-                        description est requise.</div>
-                    <img style="height: 110px;" *ngIf="!pokemonForm.invalid && pokemonForm.get('image')?.value"
+                    <img style='margin-top: 10px;' style="height: 110px;"
+                        *ngIf="!pokemonForm.invalid && pokemonForm.get('image')?.value"
                         [src]="pokemonForm.get('image')?.value" alt="Prévisualisation du pokemon" />
                 </div>
             </div>
