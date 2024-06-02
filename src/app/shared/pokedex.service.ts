@@ -11,6 +11,9 @@ export class PokedexService {
   private pokemonsSubject = new BehaviorSubject<Pokemon[]>([]);
   pokemons$ = this.pokemonsSubject.asObservable();
 
+  private loadingSubject = new BehaviorSubject<boolean>(true);  // Nouveau BehaviorSubject pour le chargement
+  loading$ = this.loadingSubject.asObservable();
+
   constructor(private http: HttpClient) {
     this.loadPokemons();
   }
@@ -25,7 +28,7 @@ export class PokedexService {
   }
 
   loadPokemons(): void {
-    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=151')
+    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=1000')
       .pipe(
         map(response => response.results),
         mergeMap((pokemonEntries: any[]) => {
@@ -36,7 +39,7 @@ export class PokedexService {
                 mergeMap(speciesData => {
                   const frenchNameEntry = speciesData.names.find((name: any) => name.language.name === 'fr');
                   const flavorTextEntry = speciesData.flavor_text_entries.find((entry: any) => entry.language.name === 'fr');
-                  const cryUrlLatest = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`; // Ceci est la nouvelle ligne
+                  const cryUrlLatest = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
                   return this.http.get<any>(pokemon.url).pipe(
                     map(pokemonDetails => ({
                       id: pokemonDetails.id,
@@ -63,9 +66,9 @@ export class PokedexService {
       .subscribe(pokemons => {
         const pokemonInstances = pokemons.map(data => new Pokemon(data));
         this.pokemonsSubject.next(pokemonInstances);
+        this.loadingSubject.next(false);  // Mettre à jour l'état du chargement à false
       });
   }
-
 
   private extractIdFromUrl(url: string): number {
     const parts = url.split('/');

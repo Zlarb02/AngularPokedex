@@ -47,26 +47,26 @@ export class CreatePokemonComponent {
   onSubmit(): void {
     if (this.pokemonForm.valid) {
       const { name, image, description } = this.pokemonForm.value;
-      const randomdId = Math.floor(Math.random() * 151) + 1;
+      const randomId = Math.floor(Math.random() * 151) + 1;
       const newPokemon: Pokemon = {
         id: this.pokedexService.getNextPokemonId(),
         name: name,
         sprite: image,
-        back_default: image,
-        front_shiny: image,
-        back_shiny: image,
+        back_default: undefined,
+        front_shiny: undefined,
+        back_shiny: undefined,
         height: 0,
         weight: 0,
         moves: [],
         types: [],
         abilities: [],
         description: description,
-        cryUrlLatest: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${randomdId}.ogg`
+        cryUrlLatest: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${randomId}.ogg`
       };
+
       this.pokedexService.addPokemon(newPokemon);
       console.log('Form submitted', newPokemon);
       this.isFormSubmitted = true;
-
     } else {
       console.log('Form is invalid');
     }

@@ -1,8 +1,25 @@
-<div *ngFor="let pokemon of pokemons;" style="display: flex; align-items: center; justify-content: center;">
-
-    <img *ngIf="!isShiny && !isBack" [src]=" pokemon.sprite" alt="{{pokemon.name}}" style="height: 136px;">
-    <img *ngIf="!isShiny  && isBack" [src]=" pokemon.back_default" alt="{{pokemon.name}}" style="height: 136px;">
-    <img *ngIf="isShiny && !isBack" [src]=" pokemon.front_shiny" alt="{{pokemon.name}}" style="height: 136px;">
-    <img *ngIf="isShiny && isBack" [src]=" pokemon.back_shiny" alt="{{pokemon.name}}" style="height: 136px;">
-
+<div *ngIf="loading" class="loading-container">
+    <div class="loading-bar"></div>
+    <p>Pokedex en cours de chargement...</p>
+    <div class="loading-bar"></div>
+</div>
+<div *ngIf="!loading">
+    <div *ngFor="let pokemon of pokemons;" style="display: flex; align-items: center; justify-content: center;">
+        <img *ngIf="!isShiny && !isBack" [src]="pokemon.sprite" alt="{{pokemon.name}}" style="height: 136px;">
+        <img *ngIf="!isShiny && isBack && pokemon.back_default" [src]="pokemon.back_default" alt="{{pokemon.name}}"
+            style="height: 136px;">
+        <img *ngIf="!isShiny && isBack && !pokemon.back_default" [src]="pokemon.sprite" alt="{{pokemon.name}}"
+            style="height: 136px; transform: scaleX(-1);">
+        <img *ngIf="isShiny && !isBack && pokemon.front_shiny" [src]="pokemon.front_shiny" alt="{{pokemon.name}}"
+            style="height: 136px;">
+        <img *ngIf="isShiny && !isBack && !pokemon.front_shiny" [src]="pokemon.sprite" alt="{{pokemon.name}}" style="height: 136px; 
+            filter: sepia(0.4) saturate(1.1) brightness(1.1);">
+        <img *ngIf="isShiny && isBack && pokemon.back_shiny" [src]="pokemon.back_shiny" alt="{{pokemon.name}}"
+            style="height: 136px;">
+        <img *ngIf="isShiny && isBack && !pokemon.back_shiny && pokemon.front_shiny " [src]="pokemon.front_shiny"
+            alt="{{pokemon.name}}" style="height: 136px; transform: scaleX(-1);">
+        <img *ngIf="isShiny && isBack && !pokemon.back_shiny && !pokemon.front_shiny " [src]="pokemon.sprite"
+            alt="{{pokemon.name}}" style="height: 136px; transform: scaleX(-1); 
+            filter: sepia(0.4) saturate(1.1) brightness(1.1);">
+    </div>
 </div>

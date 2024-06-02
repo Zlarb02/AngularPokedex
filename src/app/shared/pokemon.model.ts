@@ -2,9 +2,9 @@ export class Pokemon {
     id: number;
     name: string;
     sprite: string;
-    back_default: string;
-    front_shiny: string;
-    back_shiny: string;
+    back_default?: string;
+    front_shiny?: string;
+    back_shiny?: string;
     height: number;
     weight: number;
     types: string[];

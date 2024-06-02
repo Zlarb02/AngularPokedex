@@ -15,6 +15,9 @@ import { ZoomService } from '../../shared/zoom.service';
   styleUrls: ['./pokedex-page.component.css']
 })
 export class PokedexPageComponent implements OnInit, OnDestroy {
+
+  loading: boolean = true;
+
   isPokeSelected: boolean = false;
   pokemons!: Pokemon[];
   pokemonDetail!: Pokemon;
@@ -31,6 +34,7 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
   isInputNumber: boolean = false;
   displayTimeout: any;
 
+
   @ViewChild('pokeList') pokeList!: ElementRef;
   @ViewChild(PokemonListComponent) pokemonListComponent!: PokemonListComponent;
 
@@ -41,6 +45,9 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
     this.pokedexService.pokemons$.subscribe(pokemons => {
       this.pokemons = pokemons;
       this.maxIndex = pokemons.length - 1;
+    });
+    this.pokedexService.loading$.subscribe(loading => {
+      this.loading = loading;
     });
   }
 
@@ -72,11 +79,11 @@ export class PokedexPageComponent implements OnInit, OnDestroy {
 
         this.isInputNumber = false;
       }, 500);
-    }, 1700);
+    }, 2000);
 
-    // Optionally limit to 3 digits
-    if (this.inputNumberTemp.length > 3) {
-      this.inputNumberTemp = this.inputNumberTemp.slice(0, 3);
+    // Optionally limit to 4 digits
+    if (this.inputNumberTemp.length > 4) {
+      this.inputNumberTemp = this.inputNumberTemp.slice(0, 4);
     }
   }
 
