@@ -1,0 +1,8 @@
+<div *ngFor="let pokemon of pokemons;" style="display: flex; align-items: center; justify-content: center;">
+
+    <img *ngIf="!isShiny && !isBack" [src]=" pokemon.sprite" alt="{{pokemon.name}}" style="height: 136px;">
+    <img *ngIf="!isShiny  && isBack" [src]=" pokemon.back_default" alt="{{pokemon.name}}" style="height: 136px;">
+    <img *ngIf="isShiny && !isBack" [src]=" pokemon.front_shiny" alt="{{pokemon.name}}" style="height: 136px;">
+    <img *ngIf="isShiny && isBack" [src]=" pokemon.back_shiny" alt="{{pokemon.name}}" style="height: 136px;">
+
+</div>

@@ -1,1 +1,720 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
+
+
+
+/* Masquer les barres de défilement pour les navigateurs basés sur Webkit */
+*::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Masquer les barres de défilement pour Firefox */
+* {
+    scrollbar-width: none !important;
+}
+
+/* Masquer les barres de défilement pour Internet Explorer et Edge */
+* {
+    -ms-overflow-style: none !important;
+}
+
+:root {
+    --bg-rose: #ffabd4;
+    --bg-red: #ff055c;
+    --bg-darkred: red;
+    --bg-darkgray: #474445;
+    --bg-black: #000000;
+    --bg-blue: #0d87ff;
+    --bg-lightblue: #8cc6ff;
+    --bg-skyblue: skyblue;
+    --bg-orange: #ffa60d;
+    --bg-lightorange: #ffdc96;
+    --bg-white: #ffffff;
+    --bg-yellow: yellow;
+    --bg-lightgreen: #51f57d;
+    --bg-shadow: rgba(116, 117, 116, .5);
+}
+
+* {
+    font: 1.04em 'VT323', sans-serif;
+}
+
+
+.screen,
+#pokeList,
+.screen-container {
+    overflow: hidden;
+}
+
+
+
+
+body {
+    overflow: scroll;
+    overflow-x: hidden;
+    /* Empêche le défilement horizontal */
+
+}
+
+
+.zoom-container {
+    transform: scale(1.4);
+    /* Ajustez la valeur selon votre besoin de zoom */
+    transform-origin: top left;
+}
+
+.bg-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-image: url("https://raw.githubusercontent.com/geoffroy-luchez/Pokedex-CSS/main/images/fond.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+
+.pokeindex {
+    left: 11%;
+    position: absolute;
+    height: 700px;
+    width: 600px;
+    margin: 0 auto;
+    display: flex;
+    color: #ffffff;
+}
+
+.pokeindex-left {
+    height: 60%;
+    width: 47%;
+    background-color: var(--bg-red);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--bg-black);
+    border-right-color: var(--bg-red);
+    border-radius: 0 0 0 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.pokeindex-left::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 55%;
+    height: 10%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-red);
+    border-radius: 200px 0 0 0;
+    border-bottom: var(--bg-red);
+    top: -10%;
+    right: -4px;
+}
+
+.pokeindex-left__top {
+    position: absolute;
+    width: 114%;
+    height: 25%;
+    border: 2px solid var(--bg-black);
+    border-radius: 10px 10px 0 0;
+    background-color: var(--bg-red);
+    top: -26%;
+    left: -1%;
+    z-index: -1;
+}
+
+.circle-big {
+    position: absolute;
+    height: 70%;
+    width: 24%;
+    border: 2px solid var(--bg-black);
+    border-radius: 50%;
+    background-color: var(--bg-white);
+    top: 10%;
+    left: 3%;
+}
+
+.circle-big::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 75%;
+    width: 75%;
+    border: 2px solid var(--bg-black);
+    border-radius: 50%;
+    background-color: var(--bg-blue);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.circle-big::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 15%;
+    width: 18%;
+    border-radius: 40px / 30px;
+    background-color: var(--bg-skyblue);
+    top: 25%;
+    left: 25%;
+    transform: rotate(-45deg);
+}
+
+.circle-small {
+    height: 15%;
+    width: 5%;
+    border: 2px solid var(--bg-black);
+    border-radius: 50%;
+    background-color: var(--bg-yellow);
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+}
+
+.circle-small::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkred);
+    border-radius: 50%;
+    top: -15%;
+    left: -200%;
+}
+
+.circle-small::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-lightgreen);
+    border-radius: 50%;
+    top: -15%;
+    right: -200%;
+}
+
+.pokeindex-left__screen {
+    height: 50%;
+    width: 80%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-white);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    border-radius: 5px 5px 5px 15%;
+    position: relative;
+}
+
+.pokeindex-left__buttons {
+    height: 30%;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.pokeindex-left__buttons .buttons {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.pokeindex-left__buttons .buttons .buttons-circle {
+    height: 70%;
+    width: 20%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    border-radius: 50%;
+    position: relative;
+    margin-right: 5%;
+}
+
+.pokeindex-left__buttons .buttons .buttons-quad {
+    height: 70%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pokeindex-left__buttons .buttons .buttons-quad span {
+    height: 10%;
+    width: 42%;
+    border: 2px solid var(--bg-black);
+    position: relative;
+    border-radius: 5px
+}
+
+.pokeindex-left__buttons .buttons .buttons-quad span:nth-child(1) {
+    background-color: var(--bg-darkred);
+    position: absolute;
+}
+
+.pokeindex-left__buttons .buttons .buttons-quad span:nth-child(2) {
+    background-color: var(--bg-lightblue);
+    position: absolute;
+}
+
+.pokeindex-left__buttons .controller {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.pokeindex-left__buttons .controller .controller-touch {
+    height: 75%;
+    width: 40%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-lightgreen);
+    border-radius: 5px;
+    position: relative;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-right: 5%;
+    margin-top: 5%;
+    box-shadow: #51f57d 0 0 3px 3px;
+}
+
+.pokeindex-left__buttons .controller .controller-touch-clicked {
+    height: 75%;
+    width: 40%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-lightgreen);
+    border-radius: 5px;
+    position: relative;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-right: 5%;
+    margin-top: 5%;
+    box-shadow: #51f57d 0 0 2px 2px;
+}
+
+.pokeindex-left__buttons .controller .controller-touch:hover {
+    cursor: pointer;
+    background-color: #45e06e;
+    box-shadow: #45e06e 0 0 4px 4px;
+}
+
+.pokeindex-left__buttons .controller .controller-touch:active {
+    cursor: pointer;
+    background-color: #45e06e;
+    box-shadow: #45e06e 0 0 2px 2px;
+}
+
+.pokeindex-left__buttons .controller .controller-joystick {
+    height: 30%;
+    width: 30%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    border-radius: 5px;
+    position: relative;
+    margin-left: 5%;
+}
+
+.pokeindex-left__buttons .controller .controller-joystick::before {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    border-radius: 5px;
+    transform: rotate(90deg);
+    left: -2%;
+    top: -10%;
+}
+
+.pokeindex-left__buttons .controller .controller-joystick::after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-darkgray);
+    border-radius: 5px;
+    left: 0;
+    top: 0;
+}
+
+.pokeindex-left__screen .dots {
+    height: 4%;
+    width: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    position: relative;
+}
+
+.pokeindex-left__screen .dots span {
+    height: 100%;
+    width: 25%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-red);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+}
+
+.pokeindex-left__screen .screen {
+    height: 65%;
+    width: 80%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.pokeindex-left__screen .status {
+    height: 20%;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokeindex-left__screen .status .status-light {
+    height: 50%;
+    width: 12%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-red);
+    border-radius: 50%;
+    position: relative;
+}
+
+.pokeindex-left__screen .status .status-light-selected {
+    height: 50%;
+    width: 12%;
+    border: 2px solid var(--bg-black);
+    border-radius: 50%;
+    position: relative;
+    background-color: lightgreen;
+}
+
+.pokeindex-left__screen .status .status-light-selected::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 25%;
+    width: 28%;
+    border-radius: 40px / 30px;
+    top: 20%;
+    left: 20%;
+    transform: rotate(-45deg);
+    background-color: greenyellow;
+}
+
+.pokeindex-left__screen .status .status-light::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 25%;
+    width: 28%;
+    border-radius: 40px / 30px;
+    background-color: var(--bg-rose);
+    top: 20%;
+    left: 20%;
+    transform: rotate(-45deg);
+}
+
+.pokeindex-left__screen .status .status-sound {
+    height: 55%;
+    width: 17%;
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.pokeindex-left__screen .status .status-sound span {
+    height: 15%;
+    width: 100%;
+    background-color: var(--bg-black);
+    position: relative;
+    border-radius: 5px;
+}
+
+.pokeindex-middle {
+    height: 60%;
+    width: 6%;
+    background-color: var(--bg-red);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--bg-black);
+    box-shadow: inset 8px 0px 1px var(--bg-shadow);
+}
+
+.pokeindex-middle::before {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 9%;
+    width: 100%;
+    border-top: 2px solid var(--bg-black);
+    border-bottom: 2px solid var(--bg-black);
+    left: 0;
+    top: -10%;
+    box-shadow: inset 8px 0px 1px var(--bg-shadow);
+}
+
+.pokeindex-middle::after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 5%;
+    width: 100%;
+    border-top: 2px solid var(--bg-black);
+    border-bottom: 2px solid var(--bg-black);
+    left: 0;
+    bottom: 5%;
+}
+
+.pokeindex-right {
+    height: 60%;
+    width: 47%;
+    background-color: var(--bg-red);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--bg-black);
+    border-left-color: var(--bg-red);
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+}
+
+.pokeindex-right::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 55%;
+    height: 10%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-red);
+    border-radius: 0 200px 0 0;
+    border-bottom: var(--bg-red);
+    top: -10%;
+    left: -4px;
+}
+
+.pokeindex-right__screen {
+    width: 80%;
+    height: 25%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    position: relative;
+    overflow: scroll;
+}
+
+.pokeindex-right__buttons {
+    width: 80%;
+    height: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-end;
+}
+
+.pokeindex-right__buttons span {
+    width: 18%;
+    height: 32%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-lightblue);
+    position: relative;
+    border-radius: 5px;
+}
+
+.pokeindex-right__buttons-quadruple {
+    width: 80%;
+    height: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokeindex-right__buttons-quadruple .dot {
+    height: 30%;
+    width: 50%;
+    position: relative;
+    display: flex;
+}
+
+.pokeindex-right__buttons-quadruple .dot span {
+    height: 90%;
+    width: 10%;
+    border: 2px solid var(--bg-black);
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    margin-left: 10%;
+}
+
+.pokeindex-right__buttons-quadruple .button {
+    height: 20%;
+    width: 50%;
+    position: relative;
+    display: flex;
+}
+
+.pokeindex-right__buttons-quadruple .button span {
+    height: 80%;
+    width: 100%;
+    border: 2px solid var(--bg-black);
+    border-radius: 1px;
+    background-color: var(--bg-darkgray);
+    position: relative;
+    display: inline-block;
+    margin-right: 5%;
+}
+
+.pokeindex-right__buttons-triple {
+    width: 80%;
+    height: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pokeindex-right__buttons-triple .button {
+    height: 100%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.pokeindex-right__buttons-triple .button span {
+    height: 55%;
+    width: 35%;
+    position: relative;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-white);
+    border-radius: 5px;
+}
+
+.pokeindex-right__buttons-triple .light {
+    height: 55%;
+    width: 16%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-orange);
+    border-radius: 50%;
+    position: relative;
+    align-self: flex-start;
+}
+
+.pokeindex-right__buttons-triple .light-selected {
+    height: 55%;
+    width: 16%;
+    border: 2px solid var(--bg-black);
+    background-color: lightgreen;
+    border-radius: 50%;
+    position: relative;
+    align-self: flex-start;
+}
+
+.pokeindex-right__buttons-triple .light-selected::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 25%;
+    width: 28%;
+    border-radius: 40px / 30px;
+    background-color: greenyellow;
+    top: 20%;
+    left: 20%;
+    transform: rotate(-45deg);
+}
+
+.pokeindex-right__buttons-triple .light::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 25%;
+    width: 28%;
+    border-radius: 40px / 30px;
+    background-color: var(--bg-lightorange);
+    top: 20%;
+    left: 20%;
+    transform: rotate(-45deg);
+}
+
+.pokeindex-right__buttons-double {
+    width: 80%;
+    height: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pokeindex-right__buttons-double span {
+    width: 40%;
+    height: 45%;
+    border: 2px solid var(--bg-black);
+    background-color: var(--bg-darkgray);
+    position: relative;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

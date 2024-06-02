@@ -1,0 +1,140 @@
+<div class="bg-img"></div>
+<div class="zoom-container">
+    <div class="pokeindex">
+        <div class="pokeindex-left">
+            <div class="pokeindex-left__top">
+                <div class="circle-big"></div>
+                <div class="circle-small"></div>
+            </div>
+            <div class="pokeindex-left__screen">
+                <div class="dots">
+                    <span></span>
+                    <span></span>
+                </div>
+                <div id="pokeList" class="screen">
+
+                    <app-pokemon-list class="screen-container" [pokemons]="pokemons" [isShiny]="isShiny"
+                        [isBack]="isBack" (pokemonSelected)="receivePokemon($event)"></app-pokemon-list>
+
+                </div>
+                <div class="status">
+                    <div *ngIf="pokemonDetail && isPokeSelected" class="status-light-selected"></div>
+                    <div *ngIf="!pokemonDetail || !isPokeSelected" class="status-light"></div>
+                    <div class="status-sound">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="pokeindex-left__buttons">
+                <div class="buttons">
+                    <div (click)="scrollAll()" class="buttons-circle"
+                        style="display: flex; align-items: center; justify-content: center"><i
+                            class="fa-solid fa-up-down"></i></div>
+                    <div class="buttons-quad">
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="controller">
+                    <div *ngIf="!isPokeSelected" (click)="selectPokemon()" class="controller-touch">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div *ngIf="isPokeSelected" class="controller-touch-clicked">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="controller-joystick">
+                        <div style="height: 5vh; width: 3vh; 
+                        margin: 1vh 0 0 2vh; position: absolute;" (click)="scrollTop()">
+                        </div>
+                        <div style="height: 5vh; width: 3vh; 
+                        margin: -5vh 0 0 2vh; position: absolute;" (click)="scrollDown()">
+                        </div>
+                        <div style="height: 3vh; width: 3vh; 
+                        margin: -5px; position: absolute; z-index: 2;" *ngIf="isPokeSelected" (click)="backToggle()">
+                        </div>
+                        <div style="height: 3vh; width: 3vh; 
+                        margin: -5px; position: absolute; z-index: 2;" *ngIf="! isPokeSelected">
+                        </div>
+                        <div style="height: 3vh; width: 3vh; 
+                        margin: -5px 0 0 4.5vh; position: absolute; z-index: 2;" *ngIf="isPokeSelected"
+                            (click)="backToggle()">
+                        </div>
+                        <div style="height: 3vh; width: 3vh; 
+                        margin: -5px 0 0 4.5vh; position: absolute; z-index: 2;" *ngIf="!isPokeSelected">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pokeindex-middle"></div>
+        <div class="pokeindex-right">
+            <div class="pokeindex-right__screen">
+                <app-pokemon-detail ng *ngIf="isPokeSelected" class="screen-container"
+                    [pokemon]="pokemonDetail"></app-pokemon-detail>
+            </div>
+            <div class="pokeindex-right__buttons">
+                <span style="display: flex; align-items: center; justify-content: center">1</span>
+                <span style="display: flex; align-items: center; justify-content: center">2</span>
+                <span style="display: flex; align-items: center; justify-content: center">3</span>
+                <span style="display: flex; align-items: center; justify-content: center">4</span>
+                <span style="display: flex; align-items: center; justify-content: center">5</span>
+                <span style="display: flex; align-items: center; justify-content: center">6</span>
+                <span style="display: flex; align-items: center; justify-content: center">7</span>
+                <span style="display: flex; align-items: center; justify-content: center">8</span>
+                <span style="display: flex; align-items: center; justify-content: center">9</span>
+                <span style="display: flex; align-items: center; justify-content: center">0</span>
+            </div>
+            <div class="pokeindex-right__buttons-quadruple">
+                <div class="dot">
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="button">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="pokeindex-right__buttons-triple">
+                <div class="button">
+                    <span style="display: flex; align-items: center; justify-content: center" *ngIf="isPokeSelected"
+                        (click)="playSound()">
+                        <i style="color:black; font-size: 15px;" class="fa-solid fa-volume-high"></i>
+                    </span>
+                    <span style="display: flex; align-items: center; justify-content: center" *ngIf="!isPokeSelected">
+                        <i style="color:black; font-size: 15px;" class="fa-solid fa-volume-high"></i>
+                    </span>
+                    <span *ngIf="isPokeSelected" style="display: flex; align-items: center; justify-content: center"
+                        (click)="shinyToggle()"><img style="height: 30px;"
+                            src="https://cdn-icons-png.flaticon.com/512/6808/6808239.png" alt=""></span>
+                    <span *ngIf="!isPokeSelected"
+                        style="display: flex; align-items: center; justify-content: center"><img style="height: 30px;"
+                            src="https://cdn-icons-png.flaticon.com/512/6808/6808239.png" alt=""></span>
+                </div>
+                <div *ngIf="!pokemonDetail || !isPokeSelected" class="light"></div>
+                <div *ngIf="pokemonDetail && isPokeSelected" class="light-selected"></div>
+            </div>
+            <div class="pokeindex-right__buttons-double">
+                <span><a [routerLink]="['/']">Pokedex</a></span>
+                <span><a [routerLink]="['/create']">Capture</a></span>
+            </div>
+        </div>
+        <div
+            style="position: absolute; width: 100%; height: 100%; color:black; z-index: -1; display: flex; align-items: center; justify-content: center;">
+            <p style="margin-top: 720px; margin-left: 10px; background-color: rgba(255, 255, 255, 0.5);">
+                Crédits : <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;Made with <i class="fa-solid fa-heart"></i> by Etienne Pogoda <br>
+                <br>
+                &nbsp;&nbsp;&nbsp;Design du pokedex : <br>
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a
+                    href="https://codepen.io/alinas_view/pen/OJyKgZW">https://codepen.io/alinas_view/pen/OJyKgZW</a><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;PokeAPI : <br>
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<a href="https://pokeapi.co/">https://pokeapi.co/</a>
+            </p>
+        </div>
+    </div>
+</div>
