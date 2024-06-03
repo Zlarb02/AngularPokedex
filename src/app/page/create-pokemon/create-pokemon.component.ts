@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Pokemon } from '../../shared/pokemon.model';
 import { CommonModule } from '@angular/common';
@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ZoomService } from '../../shared/zoom.service';
 import { PokedexService } from '../../shared/pokedex.service';
-import { Observable, forkJoin, map, pluck } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -16,9 +16,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './create-pokemon.component.html',
   styleUrls: ['./create-pokemon.component.css']
 })
-export class CreatePokemonComponent {
+export class CreatePokemonComponent implements AfterViewInit {
+  isPowerOn: boolean = true;
+  private audioContext!: AudioContext;
   pokemonForm: FormGroup;
   isFormSubmitted: boolean = false;
+
+  @ViewChild('soundBar4') soundBar4!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +38,10 @@ export class CreatePokemonComponent {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.soundBar4.nativeElement.style.backgroundColor = 'black';
+  }
+
   urlValidator(control: FormControl): { [key: string]: boolean } | null {
     const urlPattern = /^(https?:\/\/).*\.(png|jpg|jpeg|gif|bmp)$/i;
     if (control.value && !control.value.match(urlPattern)) {
@@ -45,6 +53,15 @@ export class CreatePokemonComponent {
   resetForm(): void {
     this.isFormSubmitted = false;
     this.pokemonForm.reset();
+    let selectSound = document.createElement("audio");
+    selectSound.src = "../../../assets/green1.wav";
+    let nopeSound = document.createElement("audio");
+    nopeSound.src = "../../../assets/green3.wav";
+    if (this.pokemonForm.pristine && this.isPowerOn) {
+      nopeSound.play();
+    }
+    else if (this.isPowerOn)
+      selectSound.play();
   }
 
   getRandomPokemonDetail(): Observable<any> {
@@ -84,9 +101,39 @@ export class CreatePokemonComponent {
           cryUrlLatest: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${randomId}.ogg`
         };
         this.pokedexService.addPokemon(newPokemon);
+        let selectSound = document.createElement("audio");
+        selectSound.src = "../../../assets/green2.wav";
+        selectSound.play();
+        this.resetForm();
       });
+    } else {
+      this.playNopeSound
     }
   }
 
+  playNopeSound(): void {
+    let nopeSound = document.createElement("audio");
+    nopeSound.src = "../../../assets/green3.wav";
+    nopeSound.play();
+  }
+  playTicSound(): void {
+    let ticSound = document.createElement("audio");
+    ticSound.src = "../../../assets/tic.wav";
+    ticSound.play();
+  }
+
+  powerOff(): void {
+    this.isPowerOn = false;
+    this.resetForm()
+    let powerOffSound = document.createElement("audio");
+    powerOffSound.src = "../../../assets/on.wav";
+    powerOffSound.play();
+  }
+  powerOn(): void {
+    this.isPowerOn = true;
+    let powerOffSound = document.createElement("audio");
+    powerOffSound.src = "../../../assets/off.wav";
+    powerOffSound.play();
+  }
 
 }

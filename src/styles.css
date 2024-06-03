@@ -473,11 +473,12 @@ body {
 }
 
 .pokeindex-left__screen .status .status-sound span {
-    height: 15%;
+    height: 11%;
     width: 100%;
-    background-color: var(--bg-black);
     position: relative;
     border-radius: 5px;
+    border: 1px solid var(--bg-black);
+    background-color: var(--bg-white);
 }
 
 .pokeindex-middle {

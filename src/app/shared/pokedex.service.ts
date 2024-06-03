@@ -27,7 +27,7 @@ export class PokedexService {
 
   async loadPokemons(): Promise<void> {
     try {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100');
       const data = await response.json();
       const pokemonEntries = data.results;
 

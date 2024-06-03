@@ -12,7 +12,8 @@
                     <span></span>
                 </div>
                 <div class="screen" style="overflow: hidden;">
-                    <div class="screen-container" style="transform: scale(0.62); margin-top: -39px;">
+                    <div *ngIf="isPowerOn" class="screen-container"
+                        style="transform: scale(0.62); margin-top: -39px; position: absolute; left: -24px;">
                         <form [formGroup]="pokemonForm" (ngSubmit)="onSubmit()" #myForm="ngForm">
                             <div>
                                 <label for="name">Nom du Pokemon:</label>
@@ -24,7 +25,8 @@
                             </div>
                             <div>
                                 <label for="description">Description:</label>
-                                <textarea id="description" formControlName="description"></textarea>
+                                <textarea style="resize: none; width: 100%;" id="description"
+                                    formControlName="description"></textarea>
                             </div>
                         </form>
                     </div>
@@ -36,30 +38,31 @@
                         <span></span>
                         <span></span>
                         <span></span>
-                        <span></span>
+                        <span #soundBar4></span>
                     </div>
                 </div>
             </div>
             <div class="pokeindex-left__buttons">
                 <div class="buttons">
-                    <div class="buttons-circle" style="display: flex; align-items: center; justify-content: center">
+                    <div class="buttons-circle" style="display: flex; align-items: center; justify-content: center"
+                        (click)="playNopeSound()">
                         <i class="fa-solid fa-up-down"></i>
                     </div>
                     <div class="buttons-quad">
-                        <span></span>
-                        <span (click)="myForm.reset()"></span>
+                        <span *ngIf="!isPowerOn" (click)="powerOn()"></span>
+                        <span *ngIf="isPowerOn" (click)="powerOff()"></span>
+                        <span (click)="resetForm()"></span>
                     </div>
                 </div>
                 <div class="controller">
-                    <button *ngIf="!isFormSubmitted" class="controller-touch" (click)="onSubmit()" (click)="resetForm()"
-                        [disabled]="pokemonForm.invalid">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button *ngIf="isFormSubmitted" class="controller-touch-clicked" [disabled]="pokemonForm.invalid"
+                    <button *ngIf="pokemonForm.valid" class="controller-touch" (click)="onSubmit()"
                         (click)="resetForm()">
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                    <div class="controller-joystick"></div>
+                    <button *ngIf="pokemonForm.invalid" class="controller-touch-clicked" (click)="playNopeSound()">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <div class="controller-joystick" (click)="playNopeSound()"></div>
                 </div>
             </div>
         </div>
@@ -68,6 +71,12 @@
             <div class="pokeindex-right__screen" style="overflow: hidden;">
                 <div class="screen-container"
                     style="display: flex; margin-top: -5px; justify-content: center; align-items: center; flex-direction: column; transform: scale(0.7); ">
+                    <div *ngIf="pokemonForm.get('name')!.invalid && !pokemonForm.get('name')!.touched && 
+                    pokemonForm.get('description')!.invalid && !pokemonForm.get('description')!.touched && 
+                    pokemonForm.get('image')!.invalid && !pokemonForm.get('image')!.touched"
+                        style="margin-top: 10px; text-align: center;">
+                        Capturez un nouveau Pokemon !
+                    </div>
                     <div *ngIf="pokemonForm.get('name')!.invalid && pokemonForm.get('name')!.touched">Un nom est requis.
                     </div>
                     <div style='margin-top: 10px;'
@@ -81,7 +90,7 @@
                         [src]="pokemonForm.get('image')?.value" alt="Prévisualisation du pokemon" />
                 </div>
             </div>
-            <div class="pokeindex-right__buttons">
+            <div class="pokeindex-right__buttons" (click)="playNopeSound()">
                 <span style="display: flex; align-items: center; justify-content: center">1</span>
                 <span style="display: flex; align-items: center; justify-content: center">2</span>
                 <span style="display: flex; align-items: center; justify-content: center">3</span>
@@ -99,16 +108,16 @@
                     <span></span>
                 </div>
                 <div class="button">
-                    <span></span>
-                    <span></span>
+                    <span (click)="playNopeSound()"></span>
+                    <span (click)="playNopeSound()"></span>
                 </div>
             </div>
             <div class="pokeindex-right__buttons-triple">
                 <div class="button">
-                    <span style="display: flex; align-items: center; justify-content: center">
+                    <span style="display: flex; align-items: center; justify-content: center" (click)="playNopeSound()">
                         <i style="color:black; font-size: 15px;" class="fa-solid fa-volume-high"></i>
                     </span>
-                    <span style="display: flex; align-items: center; justify-content: center">
+                    <span style="display: flex; align-items: center; justify-content: center" (click)="playNopeSound()">
                         <img style="height: 30px;" src="https://cdn-icons-png.flaticon.com/512/6808/6808239.png" alt="">
                     </span>
                 </div>
@@ -116,8 +125,8 @@
                 <div *ngIf="pokemonForm.valid" class="light-selected"></div>
             </div>
             <div class="pokeindex-right__buttons-double">
-                <span><a [routerLink]="['/']">Pokedex</a></span>
-                <span><a [routerLink]="['/create']">Capture</a></span>
+                <span><a (click)="playTicSound()" [routerLink]="['/']">Pokedex</a></span>
+                <span><a (click)="playNopeSound()" [routerLink]="['/create']">Capture</a></span>
             </div>
         </div>
         <div
